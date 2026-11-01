@@ -19,11 +19,18 @@ app.get('/', (req, res) => {
     res.json({ mensaje: '¡Bienvenido a la API del Hotel Infinito!' });
 });
 
-// Importar y usar tus rutas de huéspedes
+// Importar y usar rutas de huéspedes
 app.use('/api/huespedes', huespedesRoutes);
 
 // Lee la variable de entorno de la nube o usa el 3000 por defecto en local
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`);
-});
+
+// Solo ejecutamos app.listen si estamos en local (Vercel maneja su propio puerto)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`);
+    });
+}
+
+// Exportamos la app para que Vercel la pueda usar como Serverless Function
+export default app;
