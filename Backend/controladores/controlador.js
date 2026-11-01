@@ -3,7 +3,7 @@ import pool from '../conexion/conexion.js';
 
 // GET: Obtener todos los huéspedes
 const listarHuespedes = (req, res) => {
-    const sql = 'SELECT * FROM huespedes';
+    const sql = 'SELECT * FROM Huespedes';
     
     pool.query(sql, (error, resultados) => {
         if (error) {
@@ -20,7 +20,7 @@ const listarHuespedes = (req, res) => {
 const obtenerHuesped_Id = (req, res) => {
     // Capturamos el ID que viene en la URL
     const { id } = req.params;
-    const sql = 'SELECT * FROM huespedes WHERE id_huesped = ?';
+    const sql = 'SELECT * FROM Huespedes WHERE id_huesped = ?';
 
     //Ejecutamos la consulta con un WHERE
     pool.query(sql, [id], (error, resultados) => {
@@ -43,7 +43,7 @@ const crearHuesped = (req, res) => {
     const { nombre, apellido, email, telefono } = req.body;
 
     //Consulta SQL
-    const sql = 'INSERT INTO huespedes (nombre, apellido, email, telefono) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO Huespedes (nombre, apellido, email, telefono) VALUES (?, ?, ?, ?)';
 
     //Ejecución de la consulta
     pool.query(sql, [nombre, apellido, email, telefono], (error, resultado) => {
@@ -63,7 +63,7 @@ const crearHuesped = (req, res) => {
 const editarHuesped = (req, res) => {
     const { id } = req.params;
     const { nombre, apellido, email, telefono } = req.body;
-    const sql = 'UPDATE huespedes SET nombre = ?, apellido = ?, email = ?, telefono = ? WHERE id_huesped = ?';
+    const sql = 'UPDATE Huespedes SET nombre = ?, apellido = ?, email = ?, telefono = ? WHERE id_huesped = ?';
 
     pool.query(sql, [nombre, apellido, email, telefono, id], (error, resultado) => {
         if (error) {
@@ -77,7 +77,7 @@ const editarHuesped = (req, res) => {
 // DELETE: Eliminar un huésped
 const eliminarHuesped = (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM huespedes WHERE id_huesped = ?';
+    const sql = 'DELETE FROM Huespedes WHERE id_huesped = ?';
 
     pool.query(sql, [id], (error, resultado) => {
         if (error) {
