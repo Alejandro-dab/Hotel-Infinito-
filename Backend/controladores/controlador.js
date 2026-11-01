@@ -1,4 +1,7 @@
-//Importación de la conexión a la DB
+/**
+ * Módulo de Controladores para la gestión de Huéspedes
+ * Maneja la lógica de negocio y las consultas SQL hacia la base de datos relacional.
+ */
 import pool from '../conexion/conexion.js';
 
 // GET: Obtener todos los huéspedes
@@ -22,38 +25,38 @@ const obtenerHuesped_Id = (req, res) => {
     const { id } = req.params;
     const sql = 'SELECT * FROM Huespedes WHERE id_huesped = ?';
 
-    //Ejecutamos la consulta con un WHERE
+    // Ejecutamos la consulta con un WHERE
     pool.query(sql, [id], (error, resultados) => {
         if (error) {
             console.error('Error al buscar huésped:', error);
             return res.status(500).json({ mensaje: 'Error al buscar el huésped' });
         }
-        //Si no encuentra nada, devuelve un 404
+        // Si no encuentra nada, devuelve un 404
         if (resultados.length === 0) {
             return res.status(404).json({ mensaje: 'Huésped no encontrado' });
         }
-        //Si lo encuentra, devuelve solo el primer elemento del array
+        // Si lo encuentra, devuelve solo el primer elemento del array
         res.json(resultados[0]);
     });
 };
 
 // POST: Crear un nuevo huésped
 const crearHuesped = (req, res) => {
-    //Recepción de los datos del 'body' de la petición
-    const { nombre, apellido, email, telefono } = req.body;
+    // Recepción de los datos del 'body' de la petición alineados con el esquema SQL
+    const { nombre, ap_paterno, ap_materno, num, email, pass } = req.body;
 
-    //Consulta SQL
-    const sql = 'INSERT INTO Huespedes (nombre, apellido, email, telefono) VALUES (?, ?, ?, ?)';
+    // Consulta SQL con los campos exactos de la tabla Huespedes
+    const sql = 'INSERT INTO Huespedes (nombre, ap_paterno, ap_materno, num, email, pass) VALUES (?, ?, ?, ?, ?, ?)';
 
-    //Ejecución de la consulta
-    pool.query(sql, [nombre, apellido, email, telefono], (error, resultado) => {
+    // Ejecución de la consulta con sus respectivos valores
+    pool.query(sql, [nombre, ap_paterno || null, ap_materno || null, num || null, email, pass], (error, resultado) => {
         if (error) {
             console.error('Error al insertar huésped:', error);
             return res.status(500).json({ mensaje: 'Error al registrar huésped' });
         }
         res.status(201).json({ 
             mensaje: 'Huésped registrado exitosamente', 
-            // Devolver el ID del nuevo producto creado
+            // Devolver el ID del nuevo registro creado
             id_huesped: resultado.insertId 
         });
     });
@@ -62,10 +65,11 @@ const crearHuesped = (req, res) => {
 // PUT: Actualizar un huésped
 const editarHuesped = (req, res) => {
     const { id } = req.params;
-    const { nombre, apellido, email, telefono } = req.body;
-    const sql = 'UPDATE Huespedes SET nombre = ?, apellido = ?, email = ?, telefono = ? WHERE id_huesped = ?';
+    const { nombre, ap_paterno, ap_materno, num, email, pass } = req.body;
+    
+    const sql = 'UPDATE Huespedes SET nombre = ?, ap_paterno = ?, ap_materno = ?, num = ?, email = ?, pass = ? WHERE id_huesped = ?';
 
-    pool.query(sql, [nombre, apellido, email, telefono, id], (error, resultado) => {
+    pool.query(sql, [nombre, ap_paterno || null, ap_materno || null, num || null, email, pass, id], (error, resultado) => {
         if (error) {
             console.error('Error al actualizar huésped:', error);
             return res.status(500).json({ mensaje: 'Error al actualizar huésped' });
@@ -88,7 +92,7 @@ const eliminarHuesped = (req, res) => {
     });
 };
 
-//Exportar el metodo para reutilizarlo
+// Exportar los métodos para reutilizarlos en las rutas
 export {
     listarHuespedes,
     crearHuesped, 

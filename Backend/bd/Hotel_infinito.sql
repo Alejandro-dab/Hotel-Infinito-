@@ -12,6 +12,7 @@ email VARCHAR(60),
 pass VARCHAR(50) NOT NULL
 );
 
+ALTER TABLE Huespedes MODIFY COLUMN num VARCHAR(20); /*Excede el limite de un INT*/
 SELECT * FROM Huespedes; 
 
 INSERT INTO Huespedes(nombre, ap_paterno, ap_materno, num, email, pass)
@@ -48,7 +49,5 @@ FOREIGN KEY (id_habitacion_fk) REFERENCES Habitaciones(id_habitacion)
 
 SHOW TABLES; 
 DESCRIBE Huespedes; 
-
-
 
 
