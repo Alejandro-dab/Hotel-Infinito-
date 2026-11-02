@@ -15,10 +15,10 @@ import PagosView from '@/views/PagosView.vue';
 // Cada objeto asocia una URL (path) con el componente que se renderiza
 // dentro de <RouterView /> en App.vue.
 const routes = [
-  { path: '/', name: 'Login', component: LoginView },
-  { path: '/dashboard', name: 'Main', component: MainView },
-  { path: '/pagos', name: 'Pagos', component: PagosView }, 
-  {path: '/disponibilidad', name: 'disponibilidad', component: DisponibilidadView}
+  { path: '/', name: 'login', component: LoginView },
+  { path: '/dashboard', name: 'dashboard', component: MainView },
+  { path: '/pagos', name: 'pagos', component: PagosView }, 
+  { path: '/disponibilidad', name: 'disponibilidad', component: DisponibilidadView }
 ];
 
 // Instancia del enrutador utilizando el modo de historial HTML5
