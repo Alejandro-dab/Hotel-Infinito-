@@ -46,7 +46,7 @@ const cerrarSesion = () => {
 // Acción al seleccionar una habitación
 //Redirige a la vista de disponibilidad pasando el ID de la habitación como parámetro.
 const manejarSeleccionHabitacion = (habitacion) => {
-  router.push({ name: 'disponibilidad', query: { habitacionId: habitacion.id_habitacion } });
+  router.push({ path: '/disponibilidad', query: { habitacionId: habitacion.id_habitacion } });
 };
 </script>
 
@@ -62,7 +62,7 @@ const manejarSeleccionHabitacion = (habitacion) => {
       
       <div class="menu-usuario" v-if="usuarioActual">
         <span>Huésped: <strong>{{ usuarioActual.nombre }}</strong></span>
-        <button @click="cerrarSesion" class="boton-salir">Cerrar Sesión</button>
+        <button type="button" @click.prevent="cerrarSesion" class="boton-salir">Cerrar Sesión</button>
       </div>
     </header>
 
