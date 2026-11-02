@@ -1,31 +1,24 @@
 /**
  * Configuración del enrutador principal (Vue Router)
- * Define las rutas de navegación para la aplicación cliente.
+ * Define las rutas de navegación para la aplicación cliente y utiliza el historial HTML5.
  */
 import { createRouter, createWebHistory } from 'vue-router';
-
-// El alias '@' equivale a la carpeta 'src/'. Evita rutas relativas
-// frágiles como '../views/', que se rompen si se mueve el archivo.
 import LoginView from '@/views/LoginView.vue';
 import MainView from '@/views/MainView.vue';
-import DisponibilidadView from '../views/DisponibilidadView.vue';
+import DisponibilidadView from '@/views/DisponibilidadView.vue';
 import PagosView from '@/views/PagosView.vue';
 
-// Definición de las rutas del sistema
-// Cada objeto asocia una URL (path) con el componente que se renderiza
-// dentro de <RouterView /> en App.vue.
+// Definición de la tabla de rutas del sistema
 const routes = [
-  { path: '/', name: 'login', component: LoginView },
+  { path: '/', name: 'Login', component: LoginView },
   { path: '/dashboard', name: 'dashboard', component: MainView },
   { path: '/pagos', name: 'pagos', component: PagosView }, 
-  { path: '/disponibilidad', name: 'disponibilidad', component: DisponibilidadView }
+  // Uso de parámetro dinámico (:id?) para la selección específica de recursos
+  { path: '/disponibilidad/:id?', name: 'disponibilidad', component: DisponibilidadView }
 ];
 
-// Instancia del enrutador utilizando el modo de historial HTML5
-// (URLs limpias, sin '#'). En producción requiere que el servidor
-// redirija todas las rutas a index.html (en Vercel, vía vercel.json).
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
 

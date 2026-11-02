@@ -31,8 +31,8 @@ const mensajeExito = ref('');
 const fechaMinima = new Date().toISOString().split('T')[0];
 
 /**
- * Hook de ciclo de vida: Recupera la sesión del usuario del almacenamiento local 
- * y extrae el identificador de la habitación desde los parámetros de la URL.
+ * Hook de ciclo de vida del componente de disponibilidad
+ * Extrae el identificador de la habitación desde los parámetros de la ruta o consulta.
  */
 onMounted(async () => {
   const usuarioGuardado = localStorage.getItem('user');
@@ -40,7 +40,9 @@ onMounted(async () => {
     usuarioActual.value = JSON.parse(usuarioGuardado);
   }
 
-  habitacionId.value = route.query.habitacionId;
+  // Captura prioritaria por parámetro de ruta (:id), con respaldo en query params
+  habitacionId.value = route.params.id || route.query.habitacionId;
+  
   if (habitacionId.value) {
     await obtenerDetalleHabitacion();
   } else {

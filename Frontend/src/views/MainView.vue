@@ -1,37 +1,38 @@
 <script setup>
-// Importación de herramientas necesarias de Vue y librerías
+/**
+ * Módulo de Catálogo General de Habitaciones
+ * Gestiona la visualización del inventario filtrado por pisos y control de sesión.
+ */
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import clienteAxios from '@/services/axios.js';
 
-// Variables para manejar el estado de la vista
+const router = useRouter();
+
+// Variables reactivas para el estado local del componente
 const listaHabitaciones = ref([]);
 const usuarioActual = ref(null);
 const estaCargando = ref(true);
 const mensajeError = ref('');
 
-// Se ejecuta al cargar el componente
+// Hook de ciclo de vida: Recupera el estado de sesión y carga el inventario al iniciar
 onMounted(() => {
   const usuarioGuardado = localStorage.getItem('user');
   if (usuarioGuardado) {
     usuarioActual.value = JSON.parse(usuarioGuardado);
   } else {
-    // Respaldo temporal de emergencia para que aparezca la interfaz completa
-    usuarioActual.value = { nombre: 'Huésped' };
+    usuarioActual.value = { nombre: 'Invitado' };
   }
 
   cargarHabitaciones();
 });
 
-// Petición al backend para obtener las habitaciones de la base de datos
+// Petición asíncrona al backend para obtener el catálogo de habitaciones
 const cargarHabitaciones = async () => {
   try {
     estaCargando.value = true;
-    
-    // Conexión real con el servidor para traer el inventario completo
     const respuesta = await clienteAxios.get('/api/habitaciones');
     listaHabitaciones.value = respuesta.data;
-
   } catch (error) {
     console.error('Error al obtener el catálogo:', error);
     mensajeError.value = 'No se pudo conectar con el servidor.';
@@ -40,23 +41,21 @@ const cargarHabitaciones = async () => {
   }
 };
 
-// Cerrar sesión y volver al login
+// Limpia el almacenamiento local y redirige a la vista raíz (Login)
 const cerrarSesion = () => {
   localStorage.removeItem('user');
   router.push('/');
 };
 
-// Acción al seleccionar una habitación
-//Redirige a la vista de disponibilidad pasando el ID de la habitación como parámetro.
+// Redirección basada en parámetros de ruta hacia la vista de disponibilidad
 const manejarSeleccionHabitacion = (habitacion) => {
-  router.push({ path: '/disponibilidad', query: { habitacionId: habitacion.id_habitacion } });
+  router.push('/disponibilidad/' + habitacion.id_habitacion);
 };
 </script>
 
 <template>
   <div class="contenedor-principal">
     
-    <!-- Barra de navegación -->
     <header class="barra-superior">
       <div class="logo-titulo">
         <span class="subtitulo">HOTEL INFINITO</span>
@@ -69,13 +68,11 @@ const manejarSeleccionHabitacion = (habitacion) => {
       </div>
     </header>
 
-    <!-- Contenido principal -->
     <main class="cuerpo-catalogo">
       
       <div v-if="estaCargando" class="alerta">Cargando habitaciones...</div>
       <div v-if="mensajeError" class="alerta error">{{ mensajeError }}</div>
 
-      <!-- Recorrido por cada uno de los 3 pisos -->
       <div class="seccion-piso" v-for="numeroPiso in [1, 2, 3]" :key="numeroPiso">
         
         <div class="encabezado-piso">
@@ -83,7 +80,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
           <hr class="linea-separadora" />
         </div>
 
-        <!-- Cuadrícula de habitaciones filtradas por piso -->
         <div class="curicula-habitaciones">
           <div 
             class="tarjeta-habitacion" 
@@ -91,7 +87,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
             :key="hab.id_habitacion"
           >
             
-            <!-- Imagen de la habitación -->
             <div class="contenedor-imagen" @click="manejarSeleccionHabitacion(hab)">
               <img :src="hab.preview" :alt="hab.categoria" />
               <span class="etiqueta-categoria" :class="hab.categoria.toLowerCase()">
@@ -99,14 +94,12 @@ const manejarSeleccionHabitacion = (habitacion) => {
               </span>
             </div>
             
-            <!-- Información y botones -->
             <div class="info-habitacion">
               <h3>Habitación #{{ hab.id_habitacion }}</h3>
               
               <div class="pie-tarjeta">
                 <span class="precio">$ {{ hab.precio }} <small>MXN / día</small></span>
                 
-                <!-- Botón de acción principal para iniciar el proceso de verificación -->
                 <button @click="manejarSeleccionHabitacion(hab)" class="boton-accion">
                   Ver disponibilidad
                 </button>
@@ -123,7 +116,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
 </template>
 
 <style scoped>
-/* Contenedor principal */
 .contenedor-principal {
   min-height: 100vh;
   background-color: #f7f9fa;
@@ -131,7 +123,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
   color: #2c3e50;
 }
 
-/* Barra superior */
 .barra-superior {
   display: flex;
   justify-content: space-between;
@@ -175,7 +166,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
   background-color: #fafbfc;
 }
 
-/* Catálogo y pisos */
 .cuerpo-catalogo {
   max-width: 1200px;
   margin: 0 auto;
@@ -205,14 +195,12 @@ const manejarSeleccionHabitacion = (habitacion) => {
   margin-top: 0.5rem;
 }
 
-/* Grid de habitaciones */
 .curicula-habitaciones {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
-/* Tarjetas */
 .tarjeta-habitacion {
   background: #ffffff;
   border-radius: 8px;
@@ -251,7 +239,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
 .etiqueta-categoria.deluxe { background-color: #d97706; }
 .etiqueta-categoria.suite { background-color: #1e293b; }
 
-/* Info de la habitación */
 .info-habitacion {
   padding: 1.2rem;
   display: flex;
@@ -285,7 +272,6 @@ const manejarSeleccionHabitacion = (habitacion) => {
   color: #7f8c8d;
 }
 
-/* Botón de acción */
 .boton-accion {
   background-color: #1a252c;
   color: #ffffff;
