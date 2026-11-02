@@ -19,7 +19,24 @@ const app = express();
 
 // Middlewares esenciales
 app.use(express.json()); // Permite recibir datos en formato JSON en las peticiones POST/PUT
-app.use(cors());         // Permite peticiones desde el frontend de Vue (CORS)
+// Permite peticiones desde el frontend de Vue (CORS)
+const dominiosPermitidos = [
+    'https://hotel-infinito-8wup.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || dominiosPermitidos.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Bloqueado por la política CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 // Ruta de prueba inicial para verificar que el servidor API responde
 app.get('/', (req, res) => {

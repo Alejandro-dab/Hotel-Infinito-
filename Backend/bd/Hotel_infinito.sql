@@ -2,6 +2,10 @@ DROP DATABASE IF EXISTS Hotel_infinito;
 CREATE DATABASE Hotel_infinito; 
 USE Hotel_infinito; 
 
+DROP DATABASE IF EXISTS db_Hotel_infinito; 
+CREATE DATABASE db_Hotel_infinito; 
+USE db_Hotel_infinito; 
+
 CREATE TABLE Huespedes(
 id_huesped INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, 
 nombre VARCHAR(40) NOT NULL, 
@@ -74,7 +78,9 @@ FOREIGN KEY (id_huesped_fk) REFERENCES Huespedes(id_huesped),
 FOREIGN KEY (id_habitacion_fk) REFERENCES Habitaciones(id_habitacion)
 );
 
+SELECT * FROM Pagos; 
+
 SHOW TABLES; 
 DESCRIBE Huespedes; 
-
+DESCRIBE Pagos; 
 
