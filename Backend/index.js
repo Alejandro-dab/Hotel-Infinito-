@@ -5,8 +5,10 @@ import cors from 'cors'; // Seguridad de dominios, sobre quien consulta la API.
 // Importamos el pool de conexiones 
 import pool from './conexion/conexion.js';
 
-// Importar y usar tus rutas de huéspedes
+// Importar y usar rutas de huéspedes
 import huespedesRoutes from './rutas/rutas.js';
+// Importar rutas de habitaciones.js 
+import rutasHabitaciones from './rutas/habitaciones_ruta.js';
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.get('/', (req, res) => {
 
 // Importar y usar rutas de huéspedes
 app.use('/api/huespedes', huespedesRoutes);
+app.use('/api/habitaciones', rutasHabitaciones); //endpoint de Habitaciones
 
 // Lee la variable de entorno de la nube o usa el 3000 por defecto en local
 const PORT = process.env.PORT || 3000;
