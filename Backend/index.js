@@ -38,6 +38,11 @@ app.use(cors({
     credentials: true
 }));
 
+app.options('*', cors({
+    origin: dominiosPermitidos,
+    credentials: true
+}));
+
 // Ruta de prueba inicial para verificar que el servidor API responde
 app.get('/', (req, res) => {
     res.json({ mensaje: '¡Bienvenido a la API del Hotel Infinito!' });
