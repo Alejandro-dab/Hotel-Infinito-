@@ -15,6 +15,9 @@ onMounted(() => {
   const usuarioGuardado = localStorage.getItem('user');
   if (usuarioGuardado) {
     usuarioActual.value = JSON.parse(usuarioGuardado);
+  } else {
+    // Respaldo temporal de emergencia para que aparezca la interfaz completa
+    usuarioActual.value = { nombre: 'Huésped' };
   }
 
   cargarHabitaciones();
@@ -60,8 +63,8 @@ const manejarSeleccionHabitacion = (habitacion) => {
         <h1>Exhibición General de Habitaciones</h1>
       </div>
       
-      <div class="menu-usuario" v-if="usuarioActual">
-        <span>Huésped: <strong>{{ usuarioActual.nombre }}</strong></span>
+      <div class="menu-usuario">
+        <span>Huésped: <strong>{{ usuarioActual?.nombre || 'Invitado' }}</strong></span>
         <button type="button" @click.prevent="cerrarSesion" class="boton-salir">Cerrar Sesión</button>
       </div>
     </header>
