@@ -19,9 +19,11 @@ const app = express();
 
 // Middlewares esenciales
 app.use(express.json()); // Permite recibir datos en formato JSON en las peticiones POST/PUT
-// Permite peticiones desde el frontend de Vue (CORS)
-// Permite que cualquier frontend consulte la API
-app.use(cors());
+// Permite peticiones desde el frontend de Vue (CORS) tanto local como con vercel
+app.use(cors({
+    origin: ['https://hotel-infinito-8wup.vercel.app', 'http://localhost:5173', 'http://localhost:3000'],
+    credentials: true
+}));
 
 // Ruta de prueba inicial para verificar que el servidor API responde
 app.get('/', (req, res) => {
