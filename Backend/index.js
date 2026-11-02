@@ -21,9 +21,7 @@ const app = express();
 app.use(express.json()); // Permite recibir datos en formato JSON en las peticiones POST/PUT
 // Permite peticiones desde el frontend de Vue (CORS)
 // Permite que cualquier frontend consulte la API
-app.use(cors({
-    origin: '*'
-}));
+app.use(cors());
 
 // Ruta de prueba inicial para verificar que el servidor API responde
 app.get('/', (req, res) => {
