@@ -20,14 +20,10 @@ const app = express();
 // Middlewares esenciales
 app.use(express.json()); // Permite recibir datos en formato JSON en las peticiones POST/PUT
 // Permite peticiones desde el frontend de Vue (CORS)
+// Permite que cualquier frontend consulte la API
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    origin: '*'
 }));
-
-app.options('*', cors());
 
 // Ruta de prueba inicial para verificar que el servidor API responde
 app.get('/', (req, res) => {
