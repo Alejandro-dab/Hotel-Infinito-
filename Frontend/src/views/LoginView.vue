@@ -5,7 +5,7 @@
  */
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import clienteAxios from '@/services/axios.js';
 
 const router = useRouter();
 
@@ -43,7 +43,7 @@ const handleLogin = async () => {
   errorMessage.value = '';
   
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/huespedes`);
+    const response = await clienteAxios.get('/api/huespedes');
     const huespedes = response.data;
 
     const usuario = huespedes.find(
@@ -93,7 +93,7 @@ const handleRegister = async () => {
       pass: registerData.value.pass
     };
 
-    await axios.post(`${import.meta.env.VITE_API_URL}/api/huespedes`, nuevoHuesped);
+    await clienteAxios.post('/api/huespedes', nuevoHuesped);
     
     successMessage.value = 'Cuenta creada con éxito. Ya puede iniciar sesión.';
     isRegister.value = false;

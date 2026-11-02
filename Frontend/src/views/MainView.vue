@@ -2,9 +2,7 @@
 // Importación de herramientas necesarias de Vue y librerías
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
-
-const router = useRouter();
+import clienteAxios from '@/services/axios.js';
 
 // Variables para manejar el estado de la vista
 const listaHabitaciones = ref([]);
@@ -28,7 +26,7 @@ const cargarHabitaciones = async () => {
     estaCargando.value = true;
     
     // Conexión real con el servidor para traer el inventario completo
-    const respuesta = await axios.get(`${import.meta.env.VITE_API_URL}/api/habitaciones`);
+    const respuesta = await clienteAxios.get('/api/habitaciones');
     listaHabitaciones.value = respuesta.data;
 
   } catch (error) {

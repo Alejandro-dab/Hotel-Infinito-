@@ -2,7 +2,7 @@
 // Importación de hooks de Vue y librerías para manejo de rutas y peticiones HTTP
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import clienteAxios from '@/services/axios.js';
 
 const route = useRoute();
 const router = useRouter();
@@ -54,7 +54,7 @@ onMounted(async () => {
  */
 const obtenerDetalleHabitacion = async () => {
   try {
-    const respuesta = await axios.get(`${import.meta.env.VITE_API_URL}/api/habitaciones`);
+    const respuesta = await clienteAxios.get('/api/habitaciones');
     habitacionDetalle.value = respuesta.data.find(h => h.id_habitacion == habitacionId.value);
   } catch (error) {
     console.error('Error al obtener la habitación:', error);
@@ -113,7 +113,7 @@ const checarDisponibilidadFechas = async () => {
     estaCargando.value = true;
 
     // Petición al endpoint de disponibilidad del backend para validar traslapes reales en MySQL
-    const respuesta = await axios.post(`${import.meta.env.VITE_API_URL}/api/reservaciones`, {
+    const respuesta = await clienteAxios.post('/api/reservaciones', {
       id_habitacion_fk: habitacionId.value,
       fecha_inicio: fechaInicio.value,
       fecha_fin: fechaFin.value
@@ -163,7 +163,7 @@ const procesarPagoYConfirmar = async () => {
       numero_tarjeta: numeroTarjeta.value
     };
 
-    const respuesta = await axios.post(`${import.meta.env.VITE_API_URL}/api/pagos`, datosTransaccion);
+    const respuesta = await clienteAxios.post('/api/pagos', datosTransaccion);
     
     mensajeExito.value = respuesta.data.mensaje;
 
