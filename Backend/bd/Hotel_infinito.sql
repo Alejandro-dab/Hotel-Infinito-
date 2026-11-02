@@ -62,6 +62,8 @@ FOREIGN KEY (id_huesped_fk) REFERENCES Huespedes(id_huesped),
 FOREIGN KEY (id_habitacion_fk) REFERENCES Habitaciones(id_habitacion)
 );
 
+SELECT * FROM Reservaciones; 
+
 CREATE TABLE Pagos(
 id_pago INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 pago DECIMAL(10, 2) NOT NULL, 

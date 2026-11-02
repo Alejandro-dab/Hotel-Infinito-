@@ -46,8 +46,9 @@ const cerrarSesion = () => {
 };
 
 // Acción al seleccionar una habitación
+//Redirige a la vista de disponibilidad pasando el ID de la habitación como parámetro.
 const manejarSeleccionHabitacion = (habitacion) => {
-  alert(`Habitación seleccionada: ID #${habitacion.id_habitacion} (Piso ${habitacion.piso} - ${habitacion.categoria})`);
+  router.push({ name: 'disponibilidad', query: { habitacionId: habitacion.id_habitacion } });
 };
 </script>
 
@@ -104,8 +105,9 @@ const manejarSeleccionHabitacion = (habitacion) => {
               <div class="pie-tarjeta">
                 <span class="precio">$ {{ hab.precio }} <small>MXN / día</small></span>
                 
+                <!-- Botón de acción principal para iniciar el proceso de verificación -->
                 <button @click="manejarSeleccionHabitacion(hab)" class="boton-accion">
-                  Checar disponibilidad
+                  Ver disponibilidad
                 </button>
               </div>
             </div>

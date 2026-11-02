@@ -8,6 +8,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 // frágiles como '../views/', que se rompen si se mueve el archivo.
 import LoginView from '@/views/LoginView.vue';
 import MainView from '@/views/MainView.vue';
+import DisponibilidadView from '../views/DisponibilidadView.vue';
 import PagosView from '@/views/PagosView.vue';
 
 // Definición de las rutas del sistema
@@ -16,7 +17,8 @@ import PagosView from '@/views/PagosView.vue';
 const routes = [
   { path: '/', name: 'Login', component: LoginView },
   { path: '/dashboard', name: 'Main', component: MainView },
-  { path: '/pagos', name: 'Pagos', component: PagosView }
+  { path: '/pagos', name: 'Pagos', component: PagosView }, 
+  {path: '/disponibilidad', name: 'disponibilidad', component: DisponibilidadView}
 ];
 
 // Instancia del enrutador utilizando el modo de historial HTML5
