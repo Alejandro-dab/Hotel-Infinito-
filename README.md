@@ -121,9 +121,12 @@ Para garantizar que las rutas de la Single Page Application (SPA) funcionen corr
 ### Variables de Entorno en Producción
 
 - **Frontend (`.env.production`):**
+
   ```env
-  VITE_API_URL=[https://hotel-infinito.vercel.app](https://hotel-infinito.vercel.app)
+  VITE_API_URL=[https://hotel-infinito-8wup.vercel.app](https://hotel-infinito-8wup.vercel.app)
+
   ```
+
 - **Backend (`.env` en la nube):**
   Asegurar que la configuración de CORS en `Backend/index.js` permita solicitudes desde el dominio de despliegue:
   ```javascript
